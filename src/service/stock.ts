@@ -1,6 +1,5 @@
 import { Provide } from '@midwayjs/decorator';
 import dip from 'dipiper';
-import stockList from '../../stockList.json';
 import {
   IStockItem,
   IStockBoard,
@@ -9,6 +8,11 @@ import {
   IMin,
   ITrendItem,
 } from '../interface';
+import { StockDataSource } from '../tools/dataSource';
+import { StockAnalysis } from '../tools/analysis';
+import dayjs from 'dayjs';
+
+const stockDataSource = new StockDataSource();
 
 @Provide()
 export class StockService {
@@ -31,7 +35,7 @@ export class StockService {
 
   // 获取股票列表
   async getStockList(): Promise<IStockItem[]> {
-    return stockList;
+    return await stockDataSource.getStockList();
   }
 
   // 获取个股所属板块
@@ -46,8 +50,7 @@ export class StockService {
 
   // 按年份获取个股日线历史数据
   async getDailyHis(code: string, year: string): Promise<IKLineItem[]> {
-    const symbolCode = await this.getSymbolCode(code);
-    return dip.stock.trading.getDailyHis(year.substr(-2), symbolCode);
+    return await stockDataSource.getDailyHis(code, year);
   }
 
   // 获取个股周线历史数据
@@ -72,5 +75,38 @@ export class StockService {
   async getStockTrendHis(code: string): Promise<ITrendItem[]> {
     const symbolCode = await this.getSymbolCode(code);
     return dip.stock.fundflow.getStockTrendHis(symbolCode);
+  }
+
+  async analysisStock(code: string, date: string): Promise<any> {
+    const year = (date.match(/\d{2}(\d{2})-\d{2}-\d{2}/) || [])[1] || '22';
+    const dailyHis = await this.getDailyHis(code, year);
+    const stockAnalysis = new StockAnalysis();
+    const targetIndex = dailyHis.findIndex(item => item.date === date);
+    const list = dailyHis.slice(0, targetIndex + 1);
+    console.log(list);
+    return stockAnalysis.run(list);
+  }
+
+  async getAttentionStockList(date: string): Promise<IStockItem[]> {
+    const stockList = await this.getStockList();
+    const list = [];
+    for (let i = 0; i < stockList.length; i++) {
+      const stockItem = stockList[i];
+      if (!/^sz/.test(stockItem.symbol)) continue;
+      console.log(i);
+      console.log(stockItem);
+      try {
+        const res = await this.analysisStock(stockItem.code, date || dayjs().format('YYYY-MM-DD'));
+        if (res.weight >= 5) {
+          list.push({
+            ...stockItem,
+            analysis: res,
+          });
+        }
+      } catch (_err) {
+        console.log('err', stockItem);
+      }
+    }
+    return list;
   }
 }

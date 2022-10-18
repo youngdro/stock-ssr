@@ -19,3 +19,4 @@ src/config/config.prod.ts
 *.un~
 .tsbuildinfo
 .tsbuildinfo.*
+cache/

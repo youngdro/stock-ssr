@@ -56,4 +56,16 @@ export class APIController {
   async getMonthHis(@Query('code') code) {
     return await this.stockService.getMonthHis(code);
   }
+
+  @Get('/getAttentionStockList')
+  @ApiResult()
+  async getAttentionStockList(@Query('date') date) {
+    return await this.stockService.getAttentionStockList(date);
+  }
+
+  @Get('/analysisStock')
+  @ApiResult()
+  async analysisStock(@Query('code') code, @Query('date') date) {
+    return await this.stockService.analysisStock(code, date);
+  }
 }
