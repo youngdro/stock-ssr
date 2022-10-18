@@ -9,8 +9,6 @@ import {
   ITrendItem,
 } from '../interface';
 import { StockDataSource } from '../tools/dataSource';
-import { StockAnalysis } from '../tools/analysis';
-import dayjs from 'dayjs';
 
 const stockDataSource = new StockDataSource();
 
@@ -77,36 +75,11 @@ export class StockService {
     return dip.stock.fundflow.getStockTrendHis(symbolCode);
   }
 
-  async analysisStock(code: string, date: string): Promise<any> {
-    const year = (date.match(/\d{2}(\d{2})-\d{2}-\d{2}/) || [])[1] || '22';
-    const dailyHis = await this.getDailyHis(code, year);
-    const stockAnalysis = new StockAnalysis();
-    const targetIndex = dailyHis.findIndex(item => item.date === date);
-    const list = dailyHis.slice(0, targetIndex + 1);
-    console.log(list);
-    return stockAnalysis.run(list);
+  async analysisStock(code:string, date: string): Promise<IStockItem[]> {
+    return await stockDataSource.analysisStock(code, date);
   }
 
   async getAttentionStockList(date: string): Promise<IStockItem[]> {
-    const stockList = await this.getStockList();
-    const list = [];
-    for (let i = 0; i < stockList.length; i++) {
-      const stockItem = stockList[i];
-      if (!/^sz/.test(stockItem.symbol)) continue;
-      console.log(i);
-      console.log(stockItem);
-      try {
-        const res = await this.analysisStock(stockItem.code, date || dayjs().format('YYYY-MM-DD'));
-        if (res.weight >= 5) {
-          list.push({
-            ...stockItem,
-            analysis: res,
-          });
-        }
-      } catch (_err) {
-        console.log('err', stockItem);
-      }
-    }
-    return list;
+    return await stockDataSource.getAttentionStockList(date);
   }
 }

@@ -1,21 +1,25 @@
 import axios from 'axios';
 import fs from 'fs';
 import path from 'path';
-// import dayjs from 'dayjs';
+import dayjs from 'dayjs';
 import fsExtra from 'fs-extra';
 import dip from 'dipiper';
 
 import { IKLineItem } from '../../interface/stock';
+import { StockAnalysis } from '../analysis';
 
-function Cache() {
+function Cache(dir = '') {
   return (_t, name, descripter) => {
     const original = descripter.value;
     descripter.value = async function (...args) {
       const cacheDir = path.resolve(path.resolve('.'), './cache');
       const cachePath = path.resolve(
         cacheDir,
+        dir,
         `./${[...args, name].join('/')}.json`
       );
+
+      console.log('cachePath', cachePath, dir)
       if (fs.existsSync(cachePath)) {
         return require(cachePath);
       } else {
@@ -66,9 +70,42 @@ export class StockDataSource {
   }
 
   // 按年份获取个股日线历史数据
-  @Cache()
+  @Cache('./history')
   async getDailyHis(code: string, year: string): Promise<IKLineItem[]> {
     const symbolCode = await this.getSymbolCode(code);
     return dip.stock.trading.getDailyHis(year.substr(-2), symbolCode);
   }
+
+  async analysisStock(code: string, date: string): Promise<any> {
+    const year = (date.match(/\d{2}(\d{2})-\d{2}-\d{2}/) || [])[1] || '22';
+    const dailyHis = await this.getDailyHis(code, year);
+    const stockAnalysis = new StockAnalysis();
+    const targetIndex = dailyHis.findIndex(item => item.date === date);
+    const list = dailyHis.slice(0, targetIndex + 1);
+    return stockAnalysis.run(list);
+  }
+
+  @Cache('./attention')
+  async getAttentionStockList(date: string): Promise<any[]> {
+    const stockList = await this.getStockList();
+    const list = [];
+    for (let i = 0; i < stockList.length; i++) {
+      const stockItem = stockList[i];
+      if (!/^sz/.test(stockItem.symbol)) continue;
+      console.log(i);
+      console.log(stockItem);
+      try {
+        const res = await this.analysisStock(stockItem.code, date || dayjs().format('YYYY-MM-DD'));
+        if (res.weight >= 5) {
+          list.push({
+            ...stockItem,
+            analysis: res,
+          });
+        }
+      } catch (_err) {
+        console.log('err', stockItem);
+      }
+    }
+    return list;
+  } 
 }
