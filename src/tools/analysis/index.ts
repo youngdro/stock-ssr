@@ -7,9 +7,9 @@ import { IKLineItem } from '../../interface/stock';
 // @ts-ignore
 // 修正mm_maths里给String挂上的fullname方法
 String.prototype.fullname = function (dir: string) {
-    const file = this + '';
-    return path.resolve(dir, file);
-  };
+  const file = this + '';
+  return path.resolve(dir, file);
+};
 
 export class StockAnalysis {
   maths: any;

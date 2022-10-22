@@ -50,7 +50,7 @@ export class APIController {
   async getWeekHis(@Query('code') code) {
     return await this.stockService.getWeekHis(code);
   }
-  
+
   @Get('/getMonthHis')
   @ApiResult()
   async getMonthHis(@Query('code') code) {

@@ -14,7 +14,7 @@ const stockDataSource = new StockDataSource();
 
 @Provide()
 export class StockService {
-  symbolCodeMap = {}
+  symbolCodeMap = {};
 
   async getSymbolCode(code: string): Promise<string> {
     if (!/^[a-z]/.test(code)) {
@@ -75,7 +75,7 @@ export class StockService {
     return dip.stock.fundflow.getStockTrendHis(symbolCode);
   }
 
-  async analysisStock(code:string, date: string): Promise<IStockItem[]> {
+  async analysisStock(code: string, date: string): Promise<IStockItem[]> {
     return await stockDataSource.analysisStock(code, date);
   }
 

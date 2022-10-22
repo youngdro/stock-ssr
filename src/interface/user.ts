@@ -1,3 +1,3 @@
 export interface IUserOptions {
-    uid: number;
+  uid: number;
 }

@@ -1,10 +1,9 @@
-import axios from 'axios';
+// import axios from 'axios';
 import fs from 'fs';
 import path from 'path';
 import dayjs from 'dayjs';
 import fsExtra from 'fs-extra';
 import dip from 'dipiper';
-
 import { IKLineItem } from '../../interface/stock';
 import { StockAnalysis } from '../analysis';
 
@@ -19,7 +18,7 @@ function Cache(dir = '') {
         `./${[...args, name].join('/')}.json`
       );
 
-      console.log('cachePath', cachePath, dir)
+      console.log('cachePath', cachePath, dir);
       if (fs.existsSync(cachePath)) {
         return require(cachePath);
       } else {
@@ -95,7 +94,10 @@ export class StockDataSource {
       console.log(i);
       console.log(stockItem);
       try {
-        const res = await this.analysisStock(stockItem.code, date || dayjs().format('YYYY-MM-DD'));
+        const res = await this.analysisStock(
+          stockItem.code,
+          date || dayjs().format('YYYY-MM-DD')
+        );
         if (res.weight >= 5) {
           list.push({
             ...stockItem,
@@ -107,5 +109,5 @@ export class StockDataSource {
       }
     }
     return list;
-  } 
+  }
 }
