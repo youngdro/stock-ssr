@@ -91,8 +91,6 @@ export class StockDataSource {
     for (let i = 0; i < stockList.length; i++) {
       const stockItem = stockList[i];
       if (!/^sz/.test(stockItem.symbol)) continue;
-      console.log(i);
-      console.log(stockItem);
       try {
         const res = await this.analysisStock(
           stockItem.code,

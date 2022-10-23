@@ -63,6 +63,12 @@ export class APIController {
     return await this.stockService.getAttentionStockList(date);
   }
 
+  @Get('/verifyAttentionStockList')
+  @ApiResult()
+  async verifyAttentionStockList(@Query('date') date) {
+    return await this.stockService.verifyAttentionStockList(date);
+  }
+
   @Get('/analysisStock')
   @ApiResult()
   async analysisStock(@Query('code') code, @Query('date') date) {

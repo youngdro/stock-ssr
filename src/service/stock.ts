@@ -9,6 +9,7 @@ import {
   ITrendItem,
 } from '../interface';
 import { StockDataSource } from '../tools/dataSource';
+import { verifyAttentionStockList } from '../tools/verify';
 
 const stockDataSource = new StockDataSource();
 
@@ -81,5 +82,9 @@ export class StockService {
 
   async getAttentionStockList(date: string): Promise<IStockItem[]> {
     return await stockDataSource.getAttentionStockList(date);
+  }
+
+  async verifyAttentionStockList(date: string): Promise<any> {
+    return await verifyAttentionStockList(date);
   }
 }
