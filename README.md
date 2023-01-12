@@ -1,24 +1,24 @@
-# stock ssr
+## hooks-react-starter
 
-## 使用文档
-
-> 使用 pnpm
-
-### 本地开发
+Use this template:
 
 ```bash
-$ pnpm i
-$ pnpm dev
-$ open http://localhost:8002/
+npx degit https://github.com/midwayjs/hooks/examples/react ./hooks-app
 ```
 
-> 推荐使用 pm2 部署 , **[PM2安装与常用命令](http://liqingsong.cc/article/detail/3)** 。
+Use `npm install` to install the dependencies
 
-### 部署
+## Commands
 
-```bash
-$ pnpm i # 安装开发期依赖
-$ pnpm build # 构建项目
-$ pnpm prune --production  # 移除开发依赖
-$ pnpm start # 启动项目，对应的 pm2 命令为: NODE_ENV=production pm2 start ./bootstrap.js --name midway_react_ssr -i 4
-```
+- `npm run dev`: Starts the development server
+- `npm run build`: Builds the application for production
+- `npm run start`: Runs the application in production mode
+
+## File Structure
+
+- `src`: source code, include backend and frontend
+  - `api`: backend code
+  - `others`: frontend code
+- `public`: static files
+- `midway.config.ts`: project config
+- `index.html`: entry file
