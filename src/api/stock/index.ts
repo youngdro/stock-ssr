@@ -1,39 +1,26 @@
 import { Api, Get, Params, useContext } from '@midwayjs/hooks';
 import type { Context } from '@midwayjs/koa';
-import dip from 'dipiper';
-import { StockDataSource } from '../../tools/stock/dataSource';
+import { StockFetcher } from './tools/fetcher';
 
-const stockDataSource = new StockDataSource();
+const stockFetcher = new StockFetcher();
 
 export const getTest = Api(Get(), async () => {
   return new Date().toString();
 });
 
-export const getStockList = Api(
-  Get('/getStockList'),
+export const getCurrentAllStock = Api(
+  Get('/getCurrentAllStock'),
   async () => {
-    return stockDataSource.getStockList();
+    return stockFetcher.getCurrentAllStock();
   }
 );
 
-
-export const getSymbolCode = Api(
-  Get('/getSymbolCode/:code'),
+export const getLatestDailyHis = Api(
+  Get('/getLatestDailyHis/:code'),
   Params<{ code: string }>(),
   async () => {
     const ctx = useContext<Context>();
     const { code } = ctx.params;
-    return stockDataSource.getSymbolCode(code);
-  }
-);
-
-
-export const getMonthHis = Api(
-  Get('/getMonthHis/:code'),
-  Params<{ code: string }>(),
-  async () => {
-    const ctx = useContext<Context>();
-    const { code } = ctx.params;
-    return await dip.stock.trading.getMonthHis(code);
+    return await stockFetcher.getLatestDailyHis(code);
   }
 );

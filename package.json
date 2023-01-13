@@ -18,14 +18,15 @@
     "antd": "^5.1.4",
     "axios": "^1.2.2",
     "dayjs": "^1.11.7",
-    "dipiper": "^1.0.13",
     "fs-extra": "^11.1.0",
     "isomorphic-unfetch": "^3.1.0",
     "lodash": "^4.17.21",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-router-dom": "^6.6.2",
-    "styled-components": "^5.3.6"
+    "styled-components": "^5.3.6",
+    "puppeteer": "19.5.2",
+    "string-format": "^2.0.0"
   },
   "devDependencies": {
     "@types/react": "^18.0.26",

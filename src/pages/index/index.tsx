@@ -1,15 +1,20 @@
 import React from "react";
 import { Button } from 'antd';
-import { getStockList } from '../../api/stock';
+import { getCurrentAllStock, getLatestDailyHis } from '../../api/stock';
 
 export default () => {
-  const _getStockList = () => {
-    getStockList();
+  const _getCurrentAllStock = () => {
+    getCurrentAllStock();
+  };
+
+  const _getLatestDailyHis = () => {
+    getLatestDailyHis({ params: { code: 'sz.300769' }});
   };
 
   return (
     <div>index
-      <Button onClick={_getStockList}>getStockList</Button>
+      <Button onClick={_getCurrentAllStock}>getCurrentAllStock</Button>
+      <Button onClick={_getLatestDailyHis}>getLatestDailyHis</Button>
     </div>
   );
 };
