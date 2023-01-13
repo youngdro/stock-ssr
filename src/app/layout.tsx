@@ -18,9 +18,9 @@ export default (props) => {
         <Layout style={{ minHeight: '100vh' }}>
             <Sider
                 trigger={null}
+                collapsible
                 collapsed={collapsed}
                 breakpoint="lg"
-                collapsedWidth="0"
                 onCollapse={(val) => { setCollapsed(val); }}
             >
                 {logo}
