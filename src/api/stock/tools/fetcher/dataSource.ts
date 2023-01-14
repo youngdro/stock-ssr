@@ -56,7 +56,6 @@ export const queryHistoryKLine = async (params: IKlineParams): Promise<IKLineIte
     const _fields = fields || defaultFields;
     const fieldsStr = (fields || defaultFields).join(',');
     const data = <string[]>await runPython(_path, code, fieldsStr, startDate, endDate, frequency, adjustflag || '3');
-    console.log('data', data, startDate, endDate);
     const res = <IKLineItem[]>data.map((item) => {
       return _fields.reduce((obj, key, i) => {
         obj[key] = item[i];
