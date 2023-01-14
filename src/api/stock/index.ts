@@ -1,4 +1,4 @@
-import { Api, Get, Params, useContext } from '@midwayjs/hooks';
+import { Api, Get, Query, Params, useContext } from '@midwayjs/hooks';
 import type { Context } from '@midwayjs/koa';
 import { StockFetcher } from './tools/fetcher';
 
@@ -24,3 +24,38 @@ export const getLatestDailyHis = Api(
     return await stockFetcher.getLatestDailyHis(code);
   }
 );
+
+export const updateAllLatestDailyHis = Api(
+  Get('/updateAllLatestDailyHis'),
+  async () => {
+    return await stockFetcher.updateAllLatestDailyHis();
+  }
+);
+
+export const updateAllLatestWeekHis = Api(
+  Get('/updateAllLatestWeekHis'),
+  async () => {
+    return await stockFetcher.updateAllLatestWeekHis();
+  }
+);
+
+export const getDailyHis = Api(
+  Get('/getDailyHis'),
+  Query<{ code: string, startDate: string, endDate: string }>(),
+  async () => {
+    const ctx = useContext<Context>();
+    const { code, startDate, endDate } = <{ code: string, startDate: string, endDate: string }>ctx.query;
+    return await stockFetcher.getDailyHis({ code, startDate, endDate });
+  }
+);
+
+export const getWeekHis = Api(
+  Get('/getWeekHis'),
+  Query<{ code: string, startDate: string, endDate: string }>(),
+  async () => {
+    const ctx = useContext<Context>();
+    const { code, startDate, endDate } = <{ code: string, startDate: string, endDate: string }>ctx.query;
+    return await stockFetcher.getWeekHis({ code, startDate, endDate });
+  }
+);
+

@@ -22,7 +22,7 @@ export enum FieldsNameEnum {
 }
 
 const defaultFields = ['date', 'code', 'open', 'high', 'low', 'close', 'preclose', 'volume', 'amount', 'adjustflag', 'turn', 'tradestatus', 'pctChg', 'peTTM', 'psTTM', 'pcfNcfTTM', 'pbMRQ', 'isST'];
-const weekMonthFields = ['date', 'code', 'open', 'high', 'low', 'close', 'preclose', 'volume', 'amount', 'adjustflag', 'turn', 'pctChg'];
+const weekMonthFields = ['date', 'code', 'open', 'high', 'low', 'close', 'volume', 'amount', 'adjustflag', 'turn', 'pctChg'];
 const minuteFields = ['date', 'time', 'code', 'open', 'high', 'low', 'close', 'volume', 'amount', 'adjustflag'];
 
 export const kFrequencyFieldsMap = {
