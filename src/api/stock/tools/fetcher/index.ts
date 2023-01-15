@@ -39,11 +39,12 @@ export class StockFetcher {
         return { data: require(cachePath), needAdd: false };
       }
     }
-    // 最近一年
+    // 默认拉取的最早时间
+    const subtractNumMap = { d: 1, w: 2, m: 3 };
     return {
       data: [],
       needAdd: true,
-      startDate: dayjs().subtract(1, 'year').format(this.dateFormat),
+      startDate: dayjs().subtract(subtractNumMap[frequency] || 1, 'year').format(this.dateFormat),
       endDate: dayjs().format(this.dateFormat),
     };
   }
@@ -99,17 +100,17 @@ export class StockFetcher {
     return true;
   }
 
-  // 获取所有股票的的历史日K线（默认最近一年）(新拉数据全部跑下来约3小时)
+  // 获取所有股票的的历史日K线（默认最近1年）(新拉数据全部跑下来约3小时)
   async updateAllLatestDailyHis() {
     return this.updateAllLatestHis('d');
   }
 
-  // 获取所有股票的的历史周K线（默认最近一年）
+  // 获取所有股票的的历史周K线（默认最近2年）
   async updateAllLatestWeekHis() {
     return this.updateAllLatestHis('w');
   }
 
-  // 获取所有股票的的历史月K线（默认最近一年）
+  // 获取所有股票的的历史月K线（默认最近3年）
   async updateAllLatestMonthHis() {
     return this.updateAllLatestHis('m');
   }
@@ -124,10 +125,12 @@ export class StockFetcher {
     return queryHistoryKLine({ ...params, frequency: 'd' });
   }
 
+  @LocalCodeHistoryCache(cacheHistoryDir, 'latestWeekHis.json')
   async getWeekHis(params: { code: string, startDate: string, endDate: string }): Promise<IKLineItem[]> {
     return queryHistoryKLine({ ...params, frequency: 'w' });
   }
 
+  @LocalCodeHistoryCache(cacheHistoryDir, 'latestMonthHis.json')
   async getMonthHis(params: { code: string, startDate: string, endDate: string }): Promise<IKLineItem[]> {
     return queryHistoryKLine({ ...params, frequency: 'm' });
   }

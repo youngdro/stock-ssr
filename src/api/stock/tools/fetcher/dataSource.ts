@@ -14,14 +14,14 @@ const runPython = (_path: string, ...args) => {
         });
         py.stdout.on('end', () => {
             try {
-                resolve(JSON.parse(dataStr));
-            } catch (_err) {
-                resolve(dataStr);
+              resolve(JSON.parse(dataStr));
+            } catch (err) {
+              reject(err);
             }
         });
         py.stderr.on('data', (err) => {
-            console.log('err', err);
-            reject(err.toString())
+          console.log('err', err);
+          reject(err.toString())
         });
     });
 };
@@ -37,11 +37,15 @@ export const queryCurrentAllStock = async (): Promise<ICurrentStock[]> => {
         const stock = {
           ...item,
           date,
+          close: item.sell,
           code: item.symbol.replace(/^([a-z]+)/, '$1.'),
           pctChg: item.changepercent,
+          turn: item.turnoverratio,
         };
-        delete stock.stock;
+        delete item.symbol;
         delete stock.changepercent;
+        delete stock.sell;
+        delete stock.turnoverratio;
         return stock;
       });
       result = result.concat(tmp);

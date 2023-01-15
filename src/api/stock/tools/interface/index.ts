@@ -39,4 +39,5 @@ export interface ICurrentStock {
   volume: string; // 成交量
   amount: number; // 成交额
   pctChg: number; // 涨跌幅
+  turn: number; // 换手率
 }

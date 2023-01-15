@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
-import {
-MenuFoldOutlined,
-MenuUnfoldOutlined,
-} from '@ant-design/icons';
+// import {
+// MenuFoldOutlined,
+// MenuUnfoldOutlined,
+// } from '@ant-design/icons';
 import { Layout, theme } from 'antd';
 
 const { Header, Sider, Content } = Layout;
@@ -17,7 +17,6 @@ export default (props) => {
     return (
         <Layout style={{ minHeight: '100vh' }}>
             <Sider
-                trigger={null}
                 collapsible
                 collapsed={collapsed}
                 breakpoint="lg"
@@ -27,16 +26,19 @@ export default (props) => {
                 {menu}
             </Sider>
             <Layout className="site-layout">
-                <Header style={{ padding: 0, background: colorBgContainer }}>
+                {/* <Header style={{ padding: 0, background: colorBgContainer }}>
                 {React.createElement(collapsed ? MenuUnfoldOutlined : MenuFoldOutlined, {
                     className: 'trigger',
                     onClick: () => setCollapsed(!collapsed),
                 })}
-                </Header>
+                </Header> */}
                 <Content style={{
                     padding: 24,
-                    margin: '24px 16px',
+                    position: 'relative',
                     minHeight: 280,
+                    // maxHeight: 'calc(100vh - 64px)',
+                    maxHeight: '100vh',
+                    overflow: 'auto',
                     background: colorBgContainer,
                 }}>
                     {props.children}

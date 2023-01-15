@@ -39,6 +39,13 @@ export const updateAllLatestWeekHis = Api(
   }
 );
 
+export const updateAllLatestMonthHis = Api(
+  Get('/updateAllLatestMonthHis'),
+  async () => {
+    return await stockFetcher.updateAllLatestMonthHis();
+  }
+);
+
 export const getDailyHis = Api(
   Get('/getDailyHis'),
   Query<{ code: string, startDate: string, endDate: string }>(),
@@ -59,3 +66,12 @@ export const getWeekHis = Api(
   }
 );
 
+export const getMonthHis = Api(
+  Get('/getMonthHis'),
+  Query<{ code: string, startDate: string, endDate: string }>(),
+  async () => {
+    const ctx = useContext<Context>();
+    const { code, startDate, endDate } = <{ code: string, startDate: string, endDate: string }>ctx.query;
+    return await stockFetcher.getMonthHis({ code, startDate, endDate });
+  }
+);
