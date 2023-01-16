@@ -1,6 +1,7 @@
 import React, { lazy, Suspense } from "react";
 import { useRoutes, RouteObject } from "react-router-dom";
 import { Spin } from "antd";
+import CenterLoading from "../components/center-loading";
 
 export interface SyncRoute {
     path: string;
@@ -35,13 +36,7 @@ const syncRouter = (routes: Array<SyncRoute>): RouteObject[] => {
         const item: RouteObject  = {
             path: route.path,
             element: (
-                <Suspense
-                    fallback={
-                        <div className="h-full flex justify-center items-center">
-                            <Spin tip="Loading" size="large" />
-                        </div>
-                    }
-                >
+                <Suspense fallback={<CenterLoading />}>
                     <route.component />
                 </Suspense>
             ),

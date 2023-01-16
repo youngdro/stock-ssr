@@ -4,9 +4,11 @@ import { StockFetcher } from './tools/fetcher';
 
 const stockFetcher = new StockFetcher();
 
-export const getTest = Api(Get(), async () => {
-  return new Date().toString();
-});
+// const wait = (delay) => {
+//   return new Promise((resolve) => {
+//     setTimeout(() => { resolve(true); }, delay);
+//   });
+// }
 
 export const getCurrentAllStock = Api(
   Get('/getCurrentAllStock'),

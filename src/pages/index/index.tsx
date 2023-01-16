@@ -8,6 +8,7 @@ import {
   getDailyHis, getWeekHis, getMonthHis,
 } from '../../api/stock';
 import StockCard from '../../components/stock-card';
+import CenterLoading from "../../components/center-loading";
 import usePagination from '../../hooks/usePagination';
 import { useGetCurrentAllStock } from '../../hooks/useStockDataSource';
 
@@ -59,6 +60,7 @@ export default () => {
       </SearchContainer>
       <ScrollContainer>
         <StockContainer>
+          {(!pageStockList?.length) && <CenterLoading />}
           {pageStockList.map((item, i) => renderStockCard(item, i))}
         </StockContainer>
       </ScrollContainer>
