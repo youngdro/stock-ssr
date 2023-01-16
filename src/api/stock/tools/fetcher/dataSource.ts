@@ -1,4 +1,5 @@
 import { spawn } from 'child_process';
+import puppeteer from 'puppeteer';
 import path from 'path';
 import axios from 'axios';
 import { kFrequencyFieldsMap } from '../common/config';
@@ -26,11 +27,25 @@ const runPython = (_path: string, ...args) => {
     });
 };
 
+export const puppeteerFetch = async (url: string) => {
+  return await puppeteer.launch().then(async browser => {
+    const page = await browser.newPage();
+    await page.goto(url);
+    let r = await page.$$eval('pre', pre => pre[0].innerHTML);
+    await browser.close();
+    try {
+      return JSON.parse(r);
+    } catch (err) {
+      throw err;
+    }
+  });
+};
+
 export const queryCurrentAllStock = async (): Promise<ICurrentStock[]> => {
     let result = [];
     const date = dayjs().format('YYYY-MM-DD');
     for (let i = 1; i <= 60; i++) {
-      const { data } = await axios.get(
+      const data = await puppeteerFetch(
         `http://vip.stock.finance.sina.com.cn/quotes_service/api/json_v2.php/Market_Center.getHQNodeData?page=${i}&num=100&sort=symbol&asc=1&node=hs_a&_s_r_a=init`
       );
       const tmp = data.map(item => {

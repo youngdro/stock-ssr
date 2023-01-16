@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useRequest } from 'ahooks';
-import { Pagination, Input } from 'antd';
+import { Pagination, Input, Button } from 'antd';
 import { ICurrentStock } from '../../api/stock/tools/interface';
 import { Container, StockContainer, ScrollContainer, SearchContainer, PaginationContainer } from './styled';
 import {
@@ -10,15 +9,21 @@ import {
 } from '../../api/stock';
 import StockCard from '../../components/stock-card';
 import usePagination from '../../hooks/usePagination';
+import { useGetCurrentAllStock } from '../../hooks/useStockDataSource';
 
 export default () => {
   const [searchValue, setSearchValue] = useState('');
   const { current, pageSize, onChange } = usePagination({ defaultPageSize: 30 });
-  const { data: stockList = [], loading } = useRequest(() => getCurrentAllStock());
-  const filteredStockList = stockList.filter((item) => {
-    return item.code.indexOf('bj') === -1 ? (searchValue ? (item.code.indexOf(searchValue) > -1 || item.name.indexOf(searchValue) > -1) : true) : false;
+  const { stockList, pageStockList } = useGetCurrentAllStock({
+    filter: { searchValue },
+    pagination: { current, pageSize },
+    sort: { byPctChg: 'desc' }
   });
-  const list = filteredStockList.slice(current - 1, current + pageSize - 1);
+  // const { data: stockList = [], loading } = useRequest(() => getCurrentAllStock());
+  // const filteredStockList = stockList.filter((item) => {
+  //   return item.code.indexOf('bj') === -1 ? (searchValue ? (item.code.indexOf(searchValue) > -1 || item.name.indexOf(searchValue) > -1) : true) : false;
+  // });
+  // const list = filteredStockList.slice(current - 1, current + pageSize - 1);
 
   useEffect(() => {
   }, [])
@@ -50,10 +55,11 @@ export default () => {
           onSearch={onSearch}
           style={{ width: '38.2%' }}
         />
+        {/* <Button onClick={() => { updateAllLatestDailyHis() }}>拉取最近一年所有【日】K线</Button> */}
       </SearchContainer>
       <ScrollContainer>
         <StockContainer>
-          {list.map((item, i) => renderStockCard(item, i))}
+          {pageStockList.map((item, i) => renderStockCard(item, i))}
         </StockContainer>
       </ScrollContainer>
       
@@ -79,7 +85,7 @@ export default () => {
           current={current}
           pageSize={pageSize}
           onChange={onChange}
-          total={filteredStockList.length}
+          total={stockList.length}
         />
       </PaginationContainer>
     </Container>
