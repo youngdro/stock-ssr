@@ -1,7 +1,7 @@
 import { useState } from "react";
 
 interface UsePaginationProps {
-  defaultPageSize?: number
+  defaultPageSize?: number;
 }
 
 const usePagination = (props: UsePaginationProps) => {
@@ -13,6 +13,6 @@ const usePagination = (props: UsePaginationProps) => {
     setPageSize(size);
   };
   return { current, pageSize, onChange };
-}
+};
 
 export default usePagination;

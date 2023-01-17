@@ -25,7 +25,7 @@ export class StockFetcher {
       const lastItem = data[data.length - 1];
       if (lastItem && typeof lastItem === 'object') {
         if (lastItem.date < curDate) {
-          const _startDate = dayjs(lastItem.date).add(1, frequency).format(this.dateFormat);
+          const _startDate = dayjs(lastItem.date).add(1, frequency === 'm' ? 'M' : frequency).format(this.dateFormat);
           if (_startDate >= curDate) {
             return { data: require(cachePath), needAdd: false };
           }

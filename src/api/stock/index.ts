@@ -27,6 +27,26 @@ export const getLatestDailyHis = Api(
   }
 );
 
+export const getLatestWeekHis = Api(
+  Get('/getLatestWeekHis/:code'),
+  Params<{ code: string }>(),
+  async () => {
+    const ctx = useContext<Context>();
+    const { code } = ctx.params;
+    return await stockFetcher.getLatestWeekHis(code);
+  }
+);
+
+export const getLatestMonthHis = Api(
+  Get('/getLatestMonthHis/:code'),
+  Params<{ code: string }>(),
+  async () => {
+    const ctx = useContext<Context>();
+    const { code } = ctx.params;
+    return await stockFetcher.getLatestMonthHis(code);
+  }
+);
+
 export const updateAllLatestDailyHis = Api(
   Get('/updateAllLatestDailyHis'),
   async () => {

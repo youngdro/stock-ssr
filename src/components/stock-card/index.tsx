@@ -20,7 +20,7 @@ const StockCard: React.FC<StockCardProps> = ({ stock, index }) => {
   };
   const Prefix = pctChg < 0 ? ArrowDownOutlined : ArrowUpOutlined;
   const Extra = (<Statistic value={pctChg} precision={2} suffix="%" valueStyle={pctChgStyle} prefix={<Prefix />} />);
-  const Title = [<span>{name}</span>, <span style={subTitleStyle}>{code}</span>];
+  const Title = [<span key={`stock-card-title${index}`}>{name}</span>, <span style={subTitleStyle} key={`stock-card-subtitle${index}`}>{code}</span>];
   const commonStatisticProps = { precision: 2, valueStyle };
   const onClick = () => {
     Modal.confirm({

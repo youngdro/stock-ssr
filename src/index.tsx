@@ -1,15 +1,15 @@
-import React from 'react';
+import React from "react";
 // import ReactDOM from 'react-dom';
-import { createRoot } from 'react-dom/client';
+import { createRoot } from "react-dom/client";
 // import { useRequest } from 'ahooks';
 // import { getDate } from './api/date';
 // import fetchGithubStars from './api/star';
 // import { getBookByParams, getBookByQuery } from './api/book';
-import './index.css';
+import "./index.css";
 
-import App from './app';
+import App from "./app";
 
-const container = document.getElementById('root');
+const container = document.getElementById("root");
 const root = createRoot(container);
 root.render(<App />);
 

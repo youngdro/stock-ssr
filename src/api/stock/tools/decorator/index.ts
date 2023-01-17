@@ -1,21 +1,20 @@
-import fs from 'fs';
-import path from 'path';
-// import dayjs from 'dayjs';
-import fsExtra from 'fs-extra';
-import { IKLineItem } from '../interface';
+import fs from "fs";
+import path from "path";
+import fsExtra from "fs-extra";
+import { IKLineItem } from "../interface";
 
-export function LocalCache(dir = '', options = {}) {
+export function LocalCache(dir = "", options = {}) {
   return (_t, name, descripter) => {
     const original = descripter.value;
     descripter.value = async function (...args) {
-      const cacheDir = path.resolve(path.resolve('.'), './.cache');
+      const cacheDir = path.resolve(path.resolve("."), "./.cache");
       const cachePath = path.resolve(
         cacheDir,
         dir,
-        `./${[...args, name].join('/')}.json`
+        `./${[...args, name].join("/")}.json`
       );
 
-      console.log('cachePath', cachePath, dir);
+      console.log("cachePath", cachePath, dir);
       if (fs.existsSync(cachePath)) {
         return require(cachePath);
       } else {
@@ -25,12 +24,15 @@ export function LocalCache(dir = '', options = {}) {
       }
     };
   };
-};
+}
 
 export function LocalCodeHistoryCache(cacheDir: string, cacheFileName: string) {
   return (_t, _name, descripter) => {
     const original = descripter.value;
-    descripter.value = async function (params: { code: string, startDate: string, endDate: string }, ...others) {
+    descripter.value = async function (
+      params: { code: string; startDate: string; endDate: string },
+      ...others
+    ) {
       const { code, startDate, endDate } = params;
       const cachePath = path.resolve(cacheDir, code, cacheFileName);
       if (fs.existsSync(cachePath)) {
@@ -39,12 +41,14 @@ export function LocalCodeHistoryCache(cacheDir: string, cacheFileName: string) {
           const cacheStartDate = cacheData[0].date;
           const cacheEndDate = cacheData[cacheData.length - 1].date;
           if (startDate >= cacheStartDate && endDate <= cacheEndDate) {
-            console.log('LocalCodeHistoryCache', code, startDate, endDate);
-            return cacheData.filter((item) => (item.date >= startDate && item.date <= endDate));
+            console.log("LocalCodeHistoryCache", code, startDate, endDate);
+            return cacheData.filter(
+              (item) => item.date >= startDate && item.date <= endDate
+            );
           }
         }
       }
       return await original.apply(this, [params, ...others]);
-    }
-  }
-};
+    };
+  };
+}

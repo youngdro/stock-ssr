@@ -9,6 +9,7 @@
   },
   "dependencies": {
     "@ant-design/icons": "^5.0.0",
+    "@ant-design/plots": "^1.2.4",
     "@midwayjs/hooks": "^3.1.1",
     "@midwayjs/hooks-kit": "^3.1.1",
     "@midwayjs/koa": "^3.9.9",
@@ -21,12 +22,12 @@
     "fs-extra": "^11.1.0",
     "isomorphic-unfetch": "^3.1.0",
     "lodash": "^4.17.21",
+    "puppeteer": "19.5.2",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-router-dom": "^6.6.2",
-    "styled-components": "^5.3.6",
-    "puppeteer": "19.5.2",
-    "string-format": "^2.0.0"
+    "string-format": "^2.0.0",
+    "styled-components": "^5.3.6"
   },
   "devDependencies": {
     "@types/react": "^18.0.26",

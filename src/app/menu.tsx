@@ -1,20 +1,20 @@
-import React from 'react';
-import { useNavigate, useLocation } from 'react-router-dom';
-import {
-HomeOutlined,
-StockOutlined,
-} from '@ant-design/icons';
-import { Menu } from 'antd';
+import React from "react";
+import { useNavigate, useLocation } from "react-router-dom";
+import { HomeOutlined, StockOutlined } from "@ant-design/icons";
+import { Menu } from "antd";
 
-const MenuConfig = [{
-  path: '/index',
-  icon: HomeOutlined,
-  label: '首页',
-}, {
-  path: '/stock',
-  icon: StockOutlined,
-  label: '股票',
-}]
+const MenuConfig = [
+  {
+    path: "/index",
+    icon: HomeOutlined,
+    label: "首页",
+  },
+  {
+    path: "/stock",
+    icon: StockOutlined,
+    label: "股票",
+  },
+];
 
 export default () => {
   const navigate = useNavigate();
@@ -35,4 +35,4 @@ export default () => {
       items={menuList}
     />
   );
-}
+};
