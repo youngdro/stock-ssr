@@ -1,6 +1,6 @@
-import React, { lazy, Suspense } from "react";
-import { useRoutes, RouteObject } from "react-router-dom";
-import CenterLoading from "../components/center-loading";
+import React, { lazy, Suspense } from 'react';
+import { useRoutes, RouteObject } from 'react-router-dom';
+import CenterLoading from '../components/center-loading';
 
 export interface SyncRoute {
   path: string;
@@ -14,22 +14,22 @@ export interface SyncRoute {
 
 const RouteTable: Array<SyncRoute> = [
   {
-    path: "/",
-    component: lazy(() => import("../pages/index")),
+    path: '/',
+    component: lazy(() => import('../pages/index')),
     children: [
       {
-        path: "index",
-        component: lazy(() => import("../pages/index")),
+        path: 'index',
+        component: lazy(() => import('../pages/index')),
       },
     ],
   },
   {
-    path: "/stock", //404页面
-    component: lazy(() => import("../pages/stock")),
+    path: '/stock', //404页面
+    component: lazy(() => import('../pages/stock')),
   },
   {
-    path: "*", //404页面
-    component: lazy(() => import("../pages/404")),
+    path: '*', //404页面
+    component: lazy(() => import('../pages/404')),
   },
 ];
 

@@ -1,18 +1,18 @@
-import React from "react";
-import { useNavigate, useLocation } from "react-router-dom";
-import { HomeOutlined, StockOutlined } from "@ant-design/icons";
-import { Menu } from "antd";
+import React from 'react';
+import { useNavigate, useLocation } from 'react-router-dom';
+import { HomeOutlined, StockOutlined } from '@ant-design/icons';
+import { Menu } from 'antd';
 
 const MenuConfig = [
   {
-    path: "/index",
+    path: '/index',
     icon: HomeOutlined,
-    label: "首页",
+    label: '首页',
   },
   {
-    path: "/stock",
+    path: '/stock',
     icon: StockOutlined,
-    label: "股票",
+    label: '股票',
   },
 ];
 
@@ -28,11 +28,6 @@ export default () => {
   }));
 
   return (
-    <Menu
-      theme="dark"
-      mode="inline"
-      defaultSelectedKeys={[location.pathname]}
-      items={menuList}
-    />
+    <Menu theme="dark" mode="inline" defaultSelectedKeys={[location.pathname]} items={menuList} />
   );
 };

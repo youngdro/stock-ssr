@@ -1,6 +1,6 @@
-import { ICurrentStock } from "../api/stock/tools/interface";
+import { ICurrentStock } from '../api/stock/tools/interface';
 
-export type SortOrderType = "asc" | "desc";
+export type SortOrderType = 'asc' | 'desc';
 
 export type SortFuncType<T> = (a: T, b: T) => number;
 

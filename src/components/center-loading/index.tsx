@@ -1,5 +1,5 @@
-import React from "react";
-import { Spin } from "antd";
+import React from 'react';
+import { Spin } from 'antd';
 
 export default (props) => {
   return (
@@ -7,10 +7,10 @@ export default (props) => {
       spinning={true}
       size="large"
       style={{
-        position: "absolute",
-        left: "50%",
-        top: "50%",
-        transform: "translateX(-50%) translateY(-50%)",
+        position: 'absolute',
+        left: '50%',
+        top: '50%',
+        transform: 'translateX(-50%) translateY(-50%)',
       }}
     >
       {props.children}

@@ -10,23 +10,21 @@ import { useGetCurrentAllStock } from '../../hooks/useStockDataSource';
 import { ICurrentStock } from '../../api/stock/tools/interface';
 import { UseSortProps, UseFilterProps } from '../../hooks/interface';
 
-
 export default () => {
-  const [searchValue, setSearchValue] = useState('');
   const [sorterProps, setSorterProps] = useState<Omit<UseSortProps<ICurrentStock>, 'list'>>({ sortKey: 'pctChg', order: 'desc' })
-  // const [filterProps, setFilterProps] = useState<Omit<UseFilterProps<ICurrentStock>, 'list'>>({ searchValue: '' })
+  const [filterProps, setFilterProps] = useState<Omit<UseFilterProps<ICurrentStock>, 'list'>>({ searchValue: '' })
   const { current, pageSize, onChange: onPageChange } = usePagination({ defaultPageSize: 30 });
   const { stockList, pageStockList, loading } = useGetCurrentAllStock({
     sorterProps,
+    filterProps,
     pagination: { current, pageSize },
-    filterProps: { searchValue, searchKeys: ['code', 'name']},
   });
 
   useEffect(() => {
   }, [])
 
-  const onSearch = (val) => {
-    setSearchValue(val);
+  const onFilter = (options) => {
+    setFilterProps(options);
     onPageChange(1, pageSize);
   };
 
@@ -37,7 +35,7 @@ export default () => {
   return (
     <Container>
       <StockHeader>
-        <StockFilter onSearch={onSearch} />
+        <StockFilter onFilter={onFilter} />
         <StockSorter onSort={onSort} />
       </StockHeader>
       <ScrollContainer>

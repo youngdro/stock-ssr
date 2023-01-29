@@ -1,11 +1,11 @@
 import styled from 'styled-components';
 
-export const Container = styled.div`
+export const Container = styled.div `
   position: relative;
   height: 100%;
 `;
 
-export const StockContainer = styled.div`
+export const StockContainer = styled.div `
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   grid-row-gap: 16px;
@@ -21,7 +21,7 @@ export const StockContainer = styled.div`
   }
 `;
 
-export const StockHeader = styled.div`
+export const StockHeader = styled.div `
   position: absolute;
   display: flex;
   top: 0;
@@ -33,14 +33,14 @@ export const StockHeader = styled.div`
   z-index: 1;
 `;
 
-export const ScrollContainer = styled.div`
+export const ScrollContainer = styled.div `
   height: 100%;
   padding-bottom: 54px;
   padding-top: 64px;
   overflow: auto;
 `;
 
-export const PaginationContainer = styled.div`
+export const PaginationContainer = styled.div `
   position: absolute;
   bottom: 0;
   left: 0;

@@ -18,18 +18,24 @@ export class StockFetcher {
     this.dateFormat = 'YYYY-MM-DD';
   }
 
-  private checkLatestHisCache(cachePath: string, frequency: FrequencyType): { data: IKLineItem[], needAdd: boolean, startDate?: string, endDate?: string } {
+  private checkLatestHisCache(
+    cachePath: string,
+    frequency: FrequencyType,
+  ): { data: IKLineItem[]; needAdd: boolean; startDate?: string; endDate?: string } {
     const curDate = dayjs().format(this.dateFormat);
     const curCloseTime = dayjs().hour(15).minute(0).second(0); // 当天下午3点
     const isCurClose = dayjs().isAfter(curCloseTime); // 当前时间是否已经闭市
-    const addFrequency = (date: string, f: FrequencyType) => dayjs(date).add(1, f === 'm' ? 'M' : f).format(this.dateFormat);
+    const addFrequency = (date: string, f: FrequencyType) =>
+      dayjs(date)
+        .add(1, f === 'm' ? 'M' : f)
+        .format(this.dateFormat);
     if (fs.existsSync(cachePath)) {
       const data = <IKLineItem[]>require(cachePath);
       const lastItem = data[data.length - 1];
       if (lastItem && typeof lastItem === 'object') {
         if (lastItem.date < curDate) {
           const _startDate = addFrequency(lastItem.date, frequency);
-          if (isCurClose ? (_startDate >= curDate) : (addFrequency(_startDate, frequency) >= curDate)) {
+          if (isCurClose ? _startDate >= curDate : addFrequency(_startDate, frequency) >= curDate) {
             return { data: require(cachePath), needAdd: false };
           }
           return {
@@ -47,7 +53,9 @@ export class StockFetcher {
     return {
       data: [],
       needAdd: true,
-      startDate: dayjs().subtract(subtractNumMap[frequency] || 1, 'year').format(this.dateFormat),
+      startDate: dayjs()
+        .subtract(subtractNumMap[frequency] || 1, 'year')
+        .format(this.dateFormat),
       endDate: dayjs().format(this.dateFormat),
     };
   }
@@ -55,7 +63,12 @@ export class StockFetcher {
   async getLatestHis(code: string, frequency: FrequencyType, cacheFileName: string) {
     const cachePath = path.resolve(cacheHistoryDir, code, cacheFileName);
     if (/^bj/.test(code)) return [];
-    const { data = [], needAdd, startDate, endDate } = this.checkLatestHisCache(cachePath, frequency);
+    const {
+      data = [],
+      needAdd,
+      startDate,
+      endDate,
+    } = this.checkLatestHisCache(cachePath, frequency);
     if (data && data.length) {
       if (!needAdd) return data;
     }
@@ -93,8 +106,11 @@ export class StockFetcher {
       try {
         await getLatestMethod(stockItem.code);
         console.log(
-          `${frequency} success 【${i + 1}/${allStockList.length}】（%${Math.round(((i + 1) / allStockList.length) * 100)}）`,
-          stockItem.code, stockItem.name
+          `${frequency} success 【${i + 1}/${allStockList.length}】（%${Math.round(
+            ((i + 1) / allStockList.length) * 100,
+          )}）`,
+          stockItem.code,
+          stockItem.name,
         );
       } catch (err) {
         console.log('getLatestHis err', stockItem.code, stockItem.name, err);
@@ -124,17 +140,29 @@ export class StockFetcher {
   }
 
   @LocalCodeHistoryCache(cacheHistoryDir, 'latestDailyHis.json')
-  async getDailyHis(params: { code: string, startDate: string, endDate: string }): Promise<IKLineItem[]> {
+  async getDailyHis(params: {
+    code: string;
+    startDate: string;
+    endDate: string;
+  }): Promise<IKLineItem[]> {
     return queryHistoryKLine({ ...params, frequency: 'd' });
   }
 
   @LocalCodeHistoryCache(cacheHistoryDir, 'latestWeekHis.json')
-  async getWeekHis(params: { code: string, startDate: string, endDate: string }): Promise<IKLineItem[]> {
+  async getWeekHis(params: {
+    code: string;
+    startDate: string;
+    endDate: string;
+  }): Promise<IKLineItem[]> {
     return queryHistoryKLine({ ...params, frequency: 'w' });
   }
 
   @LocalCodeHistoryCache(cacheHistoryDir, 'latestMonthHis.json')
-  async getMonthHis(params: { code: string, startDate: string, endDate: string }): Promise<IKLineItem[]> {
+  async getMonthHis(params: {
+    code: string;
+    startDate: string;
+    endDate: string;
+  }): Promise<IKLineItem[]> {
     return queryHistoryKLine({ ...params, frequency: 'm' });
   }
 }

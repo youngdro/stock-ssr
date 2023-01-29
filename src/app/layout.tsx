@@ -1,9 +1,9 @@
-import React, { useState } from "react";
+import React, { useState } from 'react';
 // import {
 // MenuFoldOutlined,
 // MenuUnfoldOutlined,
 // } from '@ant-design/icons';
-import { Layout, theme } from "antd";
+import { Layout, theme } from 'antd';
 
 const { Header, Sider, Content } = Layout;
 
@@ -15,7 +15,7 @@ export default (props) => {
   } = theme.useToken();
 
   return (
-    <Layout style={{ minHeight: "100vh" }}>
+    <Layout style={{ minHeight: '100vh' }}>
       <Sider
         collapsible
         collapsed={collapsed}
@@ -37,11 +37,11 @@ export default (props) => {
         <Content
           style={{
             padding: 24,
-            position: "relative",
+            position: 'relative',
             minHeight: 280,
             // maxHeight: 'calc(100vh - 64px)',
-            maxHeight: "100vh",
-            overflow: "auto",
+            maxHeight: '100vh',
+            overflow: 'auto',
             background: colorBgContainer,
           }}
         >

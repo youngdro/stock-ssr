@@ -1,18 +1,18 @@
-import React, { useState } from "react";
-import { Input } from "antd";
-import { Container } from "./styled";
+import React, { useState } from 'react';
+import { Input } from 'antd';
+import { ICurrentStock } from '../../api/stock/tools/interface';
+import { UseFilterProps } from '../../hooks/interface';
+import { Container } from './styled';
 
 interface StockFilterProps {
-  onSearch?: (searchValue: string) => void;
+  onFilter?: (options: Omit<UseFilterProps<ICurrentStock>, 'list'>) => void;
 }
 
 export const StockFilter: React.FC<StockFilterProps> = (props) => {
-  const { onSearch } = props;
-  const [, setSearchValue] = useState("");
+  const { onFilter } = props;
 
   const handleSearch = (val) => {
-    setSearchValue(val);
-    onSearch && onSearch(val);
+    onFilter && onFilter({ searchValue: val, searchKeys: ['code', 'name'] });
   };
 
   const renderSearchInput = () => {
@@ -27,11 +27,7 @@ export const StockFilter: React.FC<StockFilterProps> = (props) => {
     );
   };
 
-  return (
-    <Container>
-      {renderSearchInput()}
-    </Container>
-  );
+  return <Container>{renderSearchInput()}</Container>;
 };
 
 export default StockFilter;

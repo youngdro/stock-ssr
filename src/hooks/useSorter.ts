@@ -1,5 +1,5 @@
-import isNumber from "is-number";
-import { SortOrderType, UseSortProps } from "./interface";
+import isNumber from 'is-number';
+import { SortOrderType, UseSortProps } from './interface';
 
 const useSorter = <T>(props: UseSortProps<T>) => {
   const { list, sortKey, sorter, order } = props;
@@ -12,11 +12,11 @@ const useSorter = <T>(props: UseSortProps<T>) => {
           const aValue = a[key];
           const bValue = b[key];
           if (isNumber(aValue) && isNumber(bValue)) {
-            return order === "asc"
+            return order === 'asc'
               ? <number>aValue - <number>bValue
               : <number>bValue - <number>aValue;
           }
-          return (order === "asc" ? aValue > bValue : bValue > aValue) ? 1 : -1;
+          return (order === 'asc' ? aValue > bValue : bValue > aValue) ? 1 : -1;
         }
       : void 0;
   };

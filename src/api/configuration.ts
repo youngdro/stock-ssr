@@ -6,8 +6,11 @@ import logger from './middleware/logger';
  * setup midway server
  */
 export default createConfiguration({
-  imports: [Koa, hooks({
-    middleware: [logger],
-  })],
+  imports: [
+    Koa,
+    hooks({
+      middleware: [logger],
+    }),
+  ],
   importConfigs: [{ default: { keys: 'session_keys' } }],
 });
