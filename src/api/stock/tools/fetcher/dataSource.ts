@@ -55,7 +55,7 @@ export const queryCurrentAllStock = async (): Promise<ICurrentStock[]> => {
       const stock = {
         ...item,
         date,
-        close: item.sell,
+        close: String(parseFloat(item.trade) || 0),
         code: item.symbol.replace(/^([a-z]+)/, '$1.'),
         pctChg: item.changepercent,
         turn: item.turnoverratio,
@@ -63,6 +63,7 @@ export const queryCurrentAllStock = async (): Promise<ICurrentStock[]> => {
       delete item.symbol;
       delete stock.changepercent;
       delete stock.sell;
+      delete stock.settlement;
       delete stock.turnoverratio;
       return stock;
     });

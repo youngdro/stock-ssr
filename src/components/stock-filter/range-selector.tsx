@@ -20,6 +20,7 @@ interface RangeSelectorProps {
   value?: RangeType;
   defaultValue?: RangeType;
   onChange?: (value: RangeType) => void;
+  onDisableChange?: (disabled: boolean) => void;
   formatter?: (value: RangeType) => RangeType;
   inputNumberOptions?: {
     prefix?: string;
@@ -30,7 +31,18 @@ interface RangeSelectorProps {
 }
 
 const RangeSelector: React.FC<RangeSelectorProps> = (props) => {
-  const { defaultValue, value: propsValue, isPercent, onChange, min: propsMin, max: propsMax, marks, label, inputNumberOptions: options = {} } = props;
+  const {
+    defaultValue,
+    value: propsValue,
+    isPercent,
+    onChange,
+    onDisableChange,
+    min: propsMin,
+    max: propsMax,
+    marks,
+    label,
+    inputNumberOptions: options = {},
+  } = props || {};
   const min = isPercent ? propsMin * 100 : propsMin;
   const max = isPercent ? propsMax * 100 : propsMax;
   const _defaultValue: RangeType = [min, max];
@@ -39,20 +51,37 @@ const RangeSelector: React.FC<RangeSelectorProps> = (props) => {
   const inputNumberOptions = {
     ...options,
     style: { width: 90 },
-    ...(isPercent ? {
-      formatter: (value) => `${value}%`,
-      parser: (value) => value!.replace('%', ''),
-    } : {}),
+    ...(isPercent
+      ? {
+          formatter: (value) => `${value}%`,
+          parser: (value) => value!.replace('%', ''),
+        }
+      : {}),
   };
-  console.log('value', value)
-  const handleSwitchChange = (checked) => setDisabled(!checked);
+  const handleSwitchChange = (checked) => {
+    setDisabled(!checked);
+    onDisableChange(!checked);
+  };
+  const transformPropsValue = (valueArr: RangeType, type: 'in' | 'out'): RangeType => {
+    const percentValueArr = valueArr.map((item) =>
+      type === 'out' ? parseFloat(String(item / 100)) : parseInt(String(item * 100)),
+    );
+    return isPercent ? [percentValueArr[0], percentValueArr[1]] : valueArr;
+  };
+  const handleChange = (valueArr: RangeType) => {
+    onChange && onChange(transformPropsValue(valueArr, 'out'));
+  };
   const handleSliderChange = (valueArr) => {
     !propsValue && setValue(valueArr);
-    onChange && onChange(isPercent ? valueArr.map((item) => (item / 100)) : valueArr);
+    valueArr && handleChange(valueArr);
+  };
+  const onNumberInputChange = (valueArr) => {
+    setValue(valueArr);
+    handleChange(valueArr);
   };
 
   useEffect(() => {
-    propsValue && setValue(propsValue);
+    propsValue && setValue(transformPropsValue(propsValue, 'in'));
   }, [JSON.stringify(propsValue)]);
 
   return (
@@ -69,7 +98,7 @@ const RangeSelector: React.FC<RangeSelectorProps> = (props) => {
             min={min}
             max={value[1]}
             disabled={disabled}
-            onChange={(start: number) => setValue([start, value[1]])}
+            onChange={(start: number) => onNumberInputChange([start, value[1]])}
           />
           &nbsp;~&nbsp;
           <InputNumber
@@ -78,7 +107,7 @@ const RangeSelector: React.FC<RangeSelectorProps> = (props) => {
             min={value[0]}
             max={max}
             disabled={disabled}
-            onChange={(end: number) => setValue([value[0], end])}
+            onChange={(end: number) => onNumberInputChange([value[0], end])}
           />
         </AlignCenterFlexBox>
       </RangeSelectorTitle>

@@ -15,7 +15,7 @@ export const RangeSelectorContainer = styled.div`
 export const RangeSelectorTitle = styled.div`
   display: flex;
   align-items: center;
-  justify-content: space-around;
+  justify-content: space-between;
 `;
 
 export const RangeSelectorLabel = styled.span`
