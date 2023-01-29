@@ -13,49 +13,24 @@ import {
   getWeekHis,
   getMonthHis,
 } from "../api/stock";
-import { SortOrderType, UseGetCurrentAllStockProps } from "./interface";
+import { UseGetCurrentAllStockProps } from "./interface";
+import useFilter from "./useFilter";
+import useSorter from "./useSorter";
 
 export const useGetCurrentAllStock = (props: UseGetCurrentAllStockProps) => {
-  const { filter, sort, customFilter, pagination } = props;
+  const { filterProps, sorterProps, pagination } = props;
   const { data: stockList = [], loading } = useRequest(() =>
     getCurrentAllStock()
   );
-  const searchValueFilter = (item: ICurrentStock) =>
-    filter?.searchValue
-      ? item.code.indexOf(filter?.searchValue) > -1 ||
-        item.name.indexOf(filter?.searchValue) > -1
-      : true;
-  const createSortFn = (key, order?: SortOrderType) => {
-    return (a: ICurrentStock, b: ICurrentStock) => {
-      if (!order) return 0;
-      return (order === "asc" ? a[key] > b[key] : b[key] > a[key]) ? 1 : -1;
-    };
-  };
-  const byCodeSort = createSortFn("code", sort?.byCode);
-  const byPriceSort = createSortFn("close", sort?.byPrice);
-  const byPctChgSort = createSortFn("pctChg", sort?.byPctChg);
-  const byTurnSort = createSortFn("turn", sort?.byTurn);
-  const byVolumeSort = createSortFn("volume", sort?.byVolume);
-  const filteredList = stockList.filter(
-    (item) =>
-      searchValueFilter(item) && (customFilter ? customFilter(item) : true)
-  );
-  const sortedList = filteredList.sort(
-    (a, b) =>
-      byCodeSort(a, b) +
-      byPriceSort(a, b) +
-      byPctChgSort(a, b) +
-      byTurnSort(a, b) +
-      byVolumeSort(a, b)
-  );
+  const { list: filteredList } = useFilter<ICurrentStock>({ ...filterProps, list: stockList });
+  const { list: sortedList } = useSorter<ICurrentStock>({ ...sorterProps, list: filteredList });
+  const startCursor = (pagination?.current - 1) * pagination?.pageSize;
+  const endCursor = startCursor + pagination?.pageSize;
   return {
     stockList: sortedList,
     pageStockList:
       pagination?.current && pagination.pageSize
-        ? sortedList.slice(
-            pagination?.current - 1,
-            pagination?.current + pagination?.pageSize - 1
-          )
+        ? sortedList.slice(startCursor, endCursor)
         : sortedList,
     loading,
   };

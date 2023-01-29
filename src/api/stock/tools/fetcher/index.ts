@@ -20,13 +20,16 @@ export class StockFetcher {
 
   private checkLatestHisCache(cachePath: string, frequency: FrequencyType): { data: IKLineItem[], needAdd: boolean, startDate?: string, endDate?: string } {
     const curDate = dayjs().format(this.dateFormat);
+    const curCloseTime = dayjs().hour(15).minute(0).second(0); // 当天下午3点
+    const iscCurClose = dayjs().isAfter(curCloseTime); // 当前时间是否已经闭市
+    const addFrequency = (date: string, f: FrequencyType) => dayjs(date).add(1, f === 'm' ? 'M' : f).format(this.dateFormat);
     if (fs.existsSync(cachePath)) {
       const data = <IKLineItem[]>require(cachePath);
       const lastItem = data[data.length - 1];
       if (lastItem && typeof lastItem === 'object') {
         if (lastItem.date < curDate) {
-          const _startDate = dayjs(lastItem.date).add(1, frequency === 'm' ? 'M' : frequency).format(this.dateFormat);
-          if (_startDate >= curDate) {
+          const _startDate = addFrequency(lastItem.date, frequency);
+          if (iscCurClose ? (_startDate >= curDate) : (addFrequency(_startDate, frequency) >= curDate)) {
             return { data: require(cachePath), needAdd: false };
           }
           return {

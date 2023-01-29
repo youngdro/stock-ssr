@@ -21,21 +21,23 @@ export const StockContainer = styled.div`
   }
 `;
 
-export const ScrollContainer = styled.div`
-  height: 100%;
-  padding-bottom: 54px;
-  padding-top: 64px;
-  overflow: auto;
-`;
-
-export const SearchContainer = styled.div`
+export const StockHeader = styled.div`
   position: absolute;
+  display: flex;
   top: 0;
   left: 0;
   width: 100%;
   padding-bottom: 16px;
   background-color: #fff;
+  align-items: center;
   z-index: 1;
+`;
+
+export const ScrollContainer = styled.div`
+  height: 100%;
+  padding-bottom: 54px;
+  padding-top: 64px;
+  overflow: auto;
 `;
 
 export const PaginationContainer = styled.div`
