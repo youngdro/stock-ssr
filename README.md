@@ -1,10 +1,6 @@
-## hooks-react-starter
+## stock-ssr
 
-Use this template:
-
-```bash
-npx degit https://github.com/midwayjs/hooks/examples/react ./hooks-app
-```
+Use this template: https://github.com/midwayjs/hooks/examples/react
 
 Use `npm install` to install the dependencies
 
