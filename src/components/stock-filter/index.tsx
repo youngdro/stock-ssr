@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Input, Button, Drawer } from 'antd';
+import { Input, Button, Drawer, Space } from 'antd';
 import { ICurrentStock } from '../../api/stock/tools/interface';
 import { UseFilterProps } from '../../hooks/interface';
 import FilterPanel from './panel';
@@ -15,6 +15,10 @@ export const StockFilter: React.FC<StockFilterProps> = (props) => {
 
   const handleSearch = (val) => {
     onFilter && onFilter({ searchValue: val, searchKeys: ['code', 'name'] });
+  };
+
+  const handleFilter = () => {
+
   };
 
   const showFilterPanel = () => setPanelVisible(true);
@@ -33,11 +37,19 @@ export const StockFilter: React.FC<StockFilterProps> = (props) => {
     );
   };
 
+  const renderDrawExtra = () => (
+    <Space>
+      <Button type="primary" onClick={handleFilter}>
+        提交
+      </Button>
+    </Space>
+  );
+
   return (
     <Container>
       {renderSearchInput()}
       <Button type="primary" onClick={showFilterPanel}>更多筛选</Button>
-      <Drawer title="更多筛选" placement="right" onClose={hideFilterPanel} open={panelVisible}>
+      <Drawer title="更多筛选" placement="right" onClose={hideFilterPanel} open={panelVisible} extra={renderDrawExtra()}>
         <FilterPanel />
       </Drawer>
     </Container>

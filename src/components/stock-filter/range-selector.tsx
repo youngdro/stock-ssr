@@ -84,6 +84,12 @@ const RangeSelector: React.FC<RangeSelectorProps> = (props) => {
     propsValue && setValue(transformPropsValue(propsValue, 'in'));
   }, [JSON.stringify(propsValue)]);
 
+  useEffect(() => {
+    if (!propsValue && !defaultValue) {
+      handleChange(_defaultValue);
+    }
+  }, []);
+
   return (
     <RangeSelectorContainer>
       <RangeSelectorTitle>

@@ -34,6 +34,7 @@ export interface ICurrentStock {
   name: string; // 股票名称
   open: string; // 开盘价
   close: string; // 收盘价
+  trade: string; // 交易价
   high: string; // 最高价
   low: string; // 最低价
   volume: string; // 成交量
