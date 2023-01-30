@@ -10,6 +10,11 @@ interface RangeFilterItemProps {
   onDisableChange?: (disabled: boolean) => void;
 }
 
+const PercentInputNumberOptions = {
+  formatter: (value) => `${value}%`,
+  parser: (value) => String(value)!.replace('%', ''),
+};
+
 export const PriceRangeFilter: React.FC<RangeFilterItemProps> = (props) => {
   const { value, defaultValue, onChange, onDisableChange } = props || {};
   const marks = { 0: '0', 500: '500', 1000: '1000', 1500: '1500', 2000: '2000' };
@@ -35,14 +40,14 @@ export const TurnRangeFilter: React.FC<RangeFilterItemProps> = (props) => {
   return (
     <RangeSelector
       min={0}
-      max={1}
+      max={100}
       label="换手率区间"
       marks={marks}
-      isPercent
       value={value}
       defaultValue={defaultValue}
       onChange={onChange}
       onDisableChange={onDisableChange}
+      inputNumberOptions={PercentInputNumberOptions}
     />
   );
 };
@@ -52,15 +57,15 @@ export const PctChgRangeFilter: React.FC<RangeFilterItemProps> = (props) => {
   const marks = { '-20': '-20', '-10': '10', 0: '0', 10: '10', 20: '20' };
   return (
     <RangeSelector
-      min={-0.2}
-      max={0.2}
+      min={-20}
+      max={20}
       label="涨幅区间"
       marks={marks}
-      isPercent
       value={value}
       defaultValue={defaultValue}
       onChange={onChange}
       onDisableChange={onDisableChange}
+      inputNumberOptions={PercentInputNumberOptions}
     />
   );
 };

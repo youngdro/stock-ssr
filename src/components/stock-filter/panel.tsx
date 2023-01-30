@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
+import React, { useState, memo } from 'react';
 import { Form, Button } from 'antd';
-import { ICurrentStock } from '../../api/stock/tools/interface';
+// import { ICurrentStock } from '../../api/stock/tools/interface';
 // import { UseFilterProps } from '../../hooks/interface';
 import { FilterPanelContainer } from './styled';
 import { PriceRangeFilter, TurnRangeFilter, PctChgRangeFilter } from './range-filters';
@@ -10,16 +10,16 @@ interface FilterPanelProps {
 }
 
 const FilterComponentsMap = {
-  price: PriceRangeFilter,
+  trade: PriceRangeFilter,
   turn: TurnRangeFilter,
   pctChg: PctChgRangeFilter,
 };
 
 const DisabledKeyMap = {};
 
-const FilterPanel: React.FC<FilterPanelProps> = (props) => {
+const FilterPanel: React.FC<FilterPanelProps> = memo((props) => {
   const { onChange } = props;
-  const [, setValues] = useState({});
+  const [values, setValues] = useState({});
   const handleFormChange = (changedFields) => {
     setValues((values) => {
       const mergedValues = { ...values, ...changedFields };
@@ -32,12 +32,13 @@ const FilterPanel: React.FC<FilterPanelProps> = (props) => {
       // const filter = (item: ICurrentStock) => {
       //   item.trade
       // };
-      // onChange && onChange(filterValues);
+      onChange && onChange(filterValues);
       return mergedValues;
     });
   };
   const onDisableChange = (disabled, key) => {
     DisabledKeyMap[key] = disabled;
+    handleFormChange(values);
   };
   return (
     <FilterPanelContainer>
@@ -55,6 +56,6 @@ const FilterPanel: React.FC<FilterPanelProps> = (props) => {
       </Form>
     </FilterPanelContainer>
   );
-};
+});
 
 export default FilterPanel;
